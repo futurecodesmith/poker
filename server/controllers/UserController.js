@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const User = require('../models/User.js');
+const User = require('../../models/User.js');
 
 
 mongoose.connect('mongodb://localhost/poker-game');
