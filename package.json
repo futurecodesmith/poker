@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.html",
   "scripts": {
-    "start": "nodemon ./server/server.js"
+    "start": "nodemon ./server/server.js",
+    "webpack": "./node_modules/.bin/webpack -w",
+    "dev": "webpack-dev-server --inline"
   },
   "repository": {
     "type": "git",
@@ -18,8 +20,31 @@
   "homepage": "https://github.com/willrig/poker#readme",
   "dependencies": {
     "express": "^4.15.2",
+    "jQuery": "^1.7.4",
+    "mongodb": "^2.2.25",
+    "mongodb-core": "christkv/mongodb-core#2.0",
+    "mongoose": "^4.2.3",
+    "mongoose-auto-increment": "^5.0.1",
     "nodemon": "^1.11.0",
     "path": "^0.12.7",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
     "ws": "^2.2.2"
+  },
+  "devDependencies": {
+    "babel": "^5.8.38",
+    "babel-core": "^6.10.4",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.11.1",
+    "node-sass": "^4.5.1",
+    "sass-loader": "^6.0.3",
+    "style-loader": "^0.16.0",
+    "url-loader": "^0.5.8",
+    "css-loader": "^0.27.3",
+    "react": "^15.4.2",
+    "react-dom": "^15.2.1",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1"
   }
 }
