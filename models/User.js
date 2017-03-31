@@ -7,6 +7,7 @@ autoIncrement.initialize(connection);
 
 const userSchema = new Schema({
   username: {type: String, unique: true, required: true},
+  password: {type: String, required: true},
   balance: {type: Number, default: 100},
   games: {type: Array, default: []},
 });
