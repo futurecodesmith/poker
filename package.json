@@ -2,7 +2,7 @@
   "name": "poker",
   "version": "1.0.0",
   "description": "",
-  "main": "server.js",
+  "main": "index.html",
   "scripts": {
     "start": "nodemon ./server/server.js"
   },
@@ -18,6 +18,8 @@
   "homepage": "https://github.com/willrig/poker#readme",
   "dependencies": {
     "express": "^4.15.2",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "path": "^0.12.7",
+    "ws": "^2.2.2"
   }
 }
