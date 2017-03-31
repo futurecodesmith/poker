@@ -3,25 +3,39 @@ const express = require('express');
 const fs = require('fs');
 const path = require('path');
 const WebSocket = require('ws');
+const bodyParser = require('body-parser');
 
 const app = express();
+//app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-app.use('/static', express.static(path.resolve(__dirname, 'server')));
+// app.use('/static', express.static(path.join(__dirname, '..', 'client')));
 
 app.get('/', (req, res) => {
-  fs.readFile('test.html', (err, data) => {
-    if (err) res.send(err);
-    res.header('content-type', 'text/html');
-    res.send(data);
+  //fs.readFile(path.join(__dirname, '..', 'client/index.html'), (err, data) => {
+    fs.readFile(path.join(__dirname, '..', 'test.html'), (err, data) => {
+    if (err) res.send(err)
+    else {
+      res.header('content-type', 'text/html');
+      res.send(data);
+    }
   });
 });
 
 app.post('/login', (req, res) => {
-  console.log('username ', req.body.username, ' pw: ', req.body.username);
+  
+  console.log('username: ', req.body.username, ' pw: ', req.body.password);
 });
 
 app.get('/test.js', (req, res) => {
   fs.readFile('test.js', (err, data) => {
+    if (err) res.send(err);
+    res.send(data);
+  });
+});
+
+app.get('/webpack-bundle.js', (req, res) => {
+  fs.readFile(path.join(__dirname, '..', 'build/webpack-bundle.js'), (err, data) => {
     if (err) res.send(err);
     res.send(data);
   });
