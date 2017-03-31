@@ -18,6 +18,10 @@
   "homepage": "https://github.com/willrig/poker#readme",
   "dependencies": {
     "express": "^4.15.2",
+    "mongodb": "^2.2.25",
+    "mongodb-core": "christkv/mongodb-core#2.0",
+    "mongoose": "^4.2.3",
+    "mongoose-auto-increment": "^5.0.1",
     "nodemon": "^1.11.0",
     "path": "^0.12.7",
     "ws": "^2.2.2"
