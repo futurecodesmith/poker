@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 const Outcome = (props) => {
 
@@ -9,7 +9,7 @@ const Outcome = (props) => {
 
       </div>
       <div className='pot'>
-      
+
       </div>
       <div className='board'>
         <Card hidden={ true }/>

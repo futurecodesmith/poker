@@ -4,12 +4,10 @@ const Login = (props) => {
   return (
     <div id="login">
       <form>
-        <input type="text" placeholder="Username...">
-        <input type="password" placeholder="Password...">
+        <input id="username" type="text" placeholder="Username...">
+        <input id="password" type="password" placeholder="Password...">
       </form>
-      <button onClick={props.loginClick}>Create Account</button>
+      <button onClick={props.handleClick}>Create Account</button>
     </div>
   );
 }
-
-module.exports = Login;
