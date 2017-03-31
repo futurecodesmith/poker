@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 const Interface = (props) => {
 
@@ -11,10 +11,10 @@ const Interface = (props) => {
         </div>
         {/* Outcome component */}
         <Outcome status = { this.props.status }/>
-        
+
         {/* Interface */}
         <div>
-        
+
         </div>
         <button onClick={ this.props.fold } type='button' className='btn-fold'>Fold</button>
         <button onClick={ this.props.check } type='button' className='btn-check'>Check</button>
@@ -26,7 +26,7 @@ const Interface = (props) => {
      </div>
     );
   }
-    
+
 }
 
 export default Interface;

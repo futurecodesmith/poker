@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 const Hand = (props) => {
 
   render() {
 
-    return ( 
+    return (
       <div className='hand'>
         <Card face={ /* serve card face */ }/>
         <Card face={ /* serve card face */ }/>

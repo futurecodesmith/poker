@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import Hand from './Hand';
 import Interface from './Interface';
 
@@ -18,10 +18,10 @@ class Table extends Component {
   }
 
   handleFoldButton() => {
-    
+
     this.setState({
       player: playerHand,
-    
+
     });
 
   }
@@ -35,7 +35,7 @@ class Table extends Component {
   }
 
   render() {
-    
+
     return (
       <div className='table-board'>
         <Hand
