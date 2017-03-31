@@ -8,13 +8,16 @@ const app = express();
 
 app.use('/static', express.static(path.resolve(__dirname, 'server')));
 
-
 app.get('/', (req, res) => {
   fs.readFile('test.html', (err, data) => {
     if (err) res.send(err);
     res.header('content-type', 'text/html');
     res.send(data);
   });
+});
+
+app.post('/login', (req, res) => {
+  console.log('username ', req.body.username, ' pw: ', req.body.username);
 });
 
 app.get('/test.js', (req, res) => {
@@ -48,10 +51,6 @@ socket.on('connection', (client) => {
     console.log('-----------------------------------------------------------');
   });
 });
-
-
-
-
 
 //app.post('/user', userController.createUser);
 
