@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { Component } from 'react';
+const $ = require('jQuery');
 
 function getInitialState(){
   return {
@@ -13,16 +14,37 @@ class App extends Component {
     this.loginClick = this.loginClick.bind(this);
   }
 
-  loginC
+  loginClick() {
+    const data = JSON.stringify({
+      username: document.getElementById('username').value,
+      password: document.getElementById('password').value
+    });
+
+    const ajax = $.ajax({
+      type: 'POST',
+      url: '/login',
+      data: data,
+      contentType: 'application/json'
+    });
+
+    ajax.then(() => {
+      this.setState({
+        view: 'lobby'
+      });
+    })
+  }
 
   render() {
     let jsx;
+
     if (this.state.view === 'login') {
-      jsx = <Login loginClick={}>
+      jsx = <Login loginClick={this.loginClick}>
+    } else if (this.state.view === 'lobby') {
+      jsx = <p>Placeholder</p>
     }
-    // return (
-    //   <Table/>
-    // );
+    return (
+      jsx
+    );
   }
 
 }
