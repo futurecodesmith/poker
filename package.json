@@ -4,9 +4,11 @@
   "description": "",
   "main": "index.html",
   "scripts": {
-    "start": "nodemon ./server/server.js",
+    "start": "npm-run-all --parallel watch:server watch:build",
     "webpack": "./node_modules/.bin/webpack -w",
-    "dev": "webpack-dev-server --inline"
+    "dev": "webpack-dev-server --inline",
+    "watch:build": "./node_modules/.bin/webpack --watch",
+    "watch:server": "nodemon server/server.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +21,7 @@
   },
   "homepage": "https://github.com/willrig/poker#readme",
   "dependencies": {
+    "body-parser": "^1.17.1",
     "express": "^4.15.2",
     "jQuery": "^1.7.4",
     "mongodb": "^2.2.25",
@@ -26,6 +29,7 @@
     "mongoose": "^4.2.3",
     "mongoose-auto-increment": "^5.0.1",
     "nodemon": "^1.11.0",
+    "npm-run-all": "^4.0.2",
     "path": "^0.12.7",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
