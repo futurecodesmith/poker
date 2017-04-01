@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Hand from './Hand.jsx';
-import Table from './Table.jsx';
+//import Hand from './Hand.jsx';
+//import Table from './Table.jsx';
 
 class Room extends Component {
   constructor(props) {
@@ -37,7 +37,8 @@ class Room extends Component {
   render() {
 
     return (
-      <div className="room">
+      <div>{this.props.message}</div>
+      /*<div className="room">
         <Table
           communityCards={this.state.communityCards}
           potSize={this.state.potSize}
@@ -52,7 +53,7 @@ class Room extends Component {
         <Hand
           hand={this.state.hand}
         />
-      </div>
+      </div>*/
     );
   }
 

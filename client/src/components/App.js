@@ -7,7 +7,8 @@ function getInitialState(){
     view: 'login',
     username: '',
     socket: 0,
-    message: null,
+    message: '',
+    gameReady: false,
   };
 }
 

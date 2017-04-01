@@ -1,5 +1,6 @@
 const express = require('express');
 const userController = require('./controllers/UserController');
+const gameController = require('./controllers/GameController');
 const fs = require('fs');
 const path = require('path');
 const WebSocket = require('ws');
@@ -30,12 +31,10 @@ app.post('/user', userController.createUser);
 class Clients {
   constructor() {
     this.clientList = {};
+    this.saveClient = this.saveClient.bind(this);
   }
-  saveClient(uname, client, bank) {
-    this.clientList[uname] = {
-      client,
-      bank,
-    };
+  saveClient(uname, client) {
+    this.clientList[uname] = client;
   }
 }
 
@@ -44,21 +43,30 @@ class Clients {
 //     this.players = [];
 //     //this.hand;
 //   }
-//   addPlayer(uname, hand, bank) {
-//     this.clientList[uname] = {
-//       hand
-//       turn
-//     };
-//   }
+//   addPlayer(uname) {
+//     this.players.push(uname);
+//   };
 // }
 
+const hand = {};
 const clients = new Clients();
 
 const socket = new WebSocket.Server({ port: 8080 });
 socket.on('connection', (client) => {
   client.on('message', (msg) => {
     const pMsg = JSON.parse(msg);
-    clients.saveClient(pMsg.username, client, 100);
+    clients.saveClient(pMsg.username, client);
+    const clientArr = Object.keys(clients.clientList);
+    if (clientArr.length === 2) {
+      // create hand
+      console.log(clientArr[0]);
+      hand.deck = gameController.createHand(clientArr[0]);
+      console.log(hand.deck);
+      Object.keys(clients.clientList).forEach((key) => {
+        clients.clientList[key].send('GameReady');
+        // clients.clientList[key].send('GameReady');
+      });
+    }
   });
 });
 

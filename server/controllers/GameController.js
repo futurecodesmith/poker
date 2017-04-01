@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 const Game = require('../../models/Game.js');
 
 
-mongoose.connect('mongodb://localhost/poker-game');
+//mongoose.connect('mongodb://localhost/poker-game');
 
 const GameController = {
   createGame: (req, res, next) => {
@@ -224,23 +224,25 @@ const GameController = {
     return 'tie';
   },
 
-  createHand: (message) => {
+  createHand: (username) => {
+    const deck = GameController.createDeck();
     const hand = {
-      deck: GameController.createDeck(),
-      dealer: message.sender,
-      defaultWinner: GameController.defaultWinner(this.deck),
+      deck,
+      dealer: username,
+      defaultWinner: GameController.defaultWinner(deck),
       round1: [],
       round2: [],
       round3: [],
-      round4: []
-    }
+      round4: [],
+    };
+    return hand;
   },
 
-  updateHand: (message, hand) => {
-    if (message.action === 'bet') {
-      hand[message.round].push(message.wager);
-    } else if (message.action === 'fold')
-  }
+  // updateHand: (message, hand) => {
+  //   if (message.action === 'bet') {
+  //     hand[message.round].push(message.wager);
+  //   } else if (message.action === 'fold')
+  // }
 
   
 
