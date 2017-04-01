@@ -15,7 +15,7 @@ const GameController = {
   createDeck: () => {
     const cards = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,
       24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,
-      59,50,51];
+      49,50,51];
     const deck = [];
 
     for (let i = 52; i > 43; i -= 1) {
@@ -25,7 +25,38 @@ const GameController = {
     return deck;
   },
 
-  defaultWinner: (deck) => {
+  defaultWinner: (hands) => {
+    const dealerHand = hands[0];
+    const opponentHand = hands[1];
+    if (dealerHand[0] < opponentHand[0]) return 'dealer';
+    if (dealerHand[0] > opponentHand[0]) return 'opponent';
+
+    //tied with fullhouse or twoPair
+    if (dealerHand[0] === 2 || dealerHand[0] === 6) {
+      if (dealerHand[1][0] > opponentHand[1][0]) return 'dealer';
+      if (opponentHand[1][0] > dealerHand[1][0]) return 'opponent';
+      if (dealerHand[1][1] > opponentHand[1][1]) return 'dealer';
+      if (opponentHand[1][1] > dealerHand[1][1]) return 'opponent';
+      return 'tie';
+    }
+    //tied with flush
+    if (dealerHand[0] === 3) {
+      while (dealerHand[1].length) {
+        let dealerCard = dealerHand[1].pop();
+        let opponentCard = opponentHand.pop();
+        if (dealerCard > opponentCard) return 'dealer';
+        if (opponentCard > dealerCard) return 'opponent';
+      }
+      return 'tie';
+    }
+    //tied with anything else
+    if (dealerHand[1] > opponentHand[1]) return 'dealer';
+    if (opponentHand[1] > dealerHand[1]) return 'opponent';
+    
+    return 'tie';
+  },
+
+  playerHands: (deck) => {
     function straightFlush(cards) {
       cards.sort((a,b) => a-b);
       let consecutive = 0;
@@ -194,42 +225,34 @@ const GameController = {
     let opponentHand = [];
     handTypes.forEach((valuation, index) => {
       if (!dealerHand.length && valuation(dealerCards) !== false) dealerHand.push(index, valuation(dealerCards));
-      if (!opponentHand.length && valuation(dealerCards) !== false) opponentHand.push(index, valuation(opponentCards));
-    })
+      if (!opponentHand.length && valuation(opponentCards) !== false) opponentHand.push(index, valuation(opponentCards));
+    });
 
-    if (dealerHand[0] < opponentHand[0]) return 'dealer';
-    if (dealerHand[0] > opponentHand[0]) return 'opponent';
+    return [dealerHand, opponentHand];
 
-    //tied with fullhouse or twoPair
-    if (dealerHand[0] === 2 || dealerHand[0] === 6) {
-      if (dealerHand[1][0] > opponentHand[1][0]) return 'dealer';
-      if (opponentHand[1][0] > dealerHand[1][0]) return 'opponent';
-      if (dealerHand[1][1] > opponentHand[1][1]) return 'dealer';
-      if (opponentHand[1][1] > dealerHand[1][1]) return 'opponent';
-      return 'tie';
-    }
-    //tied with flush
-    if (dealerHand[0] === 3) {
-      while (dealerHand[1].length) {
-        let dealerCard = dealerHand[1].pop();
-        let opponentCard = opponentHand.pop();
-        if (dealerCard > opponentCard) return 'dealer';
-        if (opponentCard > dealerCard) return 'opponent';
-      }
-      return 'tie';
-    }
-    //tied with anything else
-    if (dealerHand[1] > opponentHand[1]) return 'dealer';
-    if (opponentHand[1] > dealerHand[1]) return 'opponent';
-    return 'tie';
+   
+  },
+
+  createReadableDeck: (deck) => {
+    const suits = ['c', 's', 'h', 'd'];
+    const newDeck = deck.map(card => {
+      let cardVal = card % 13 + 2;
+      let cardSuit = suits[Math.floor(card / 13)]
+      return cardVal + cardSuit;
+    });
+    return newDeck;
   },
 
   createHand: (username) => {
     const deck = GameController.createDeck();
     const hand = {
       deck,
+      readableDeck: GameController.createReadableDeck(deck),
       dealer: username,
-      defaultWinner: GameController.defaultWinner(deck),
+      defaultWinner: GameController.defaultWinner(GameController.playerHands(deck)),
+      dealerHand: GameController.playerHands(deck)[0],
+      opponentHand: GameController.playerHands(deck)[1],
+      currentRound: 1,
       round1: [],
       round2: [],
       round3: [],

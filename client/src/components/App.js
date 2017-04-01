@@ -9,6 +9,9 @@ function getInitialState(){
     socket: 0,
     message: '',
     gameReady: false,
+    hand: '',
+    amDealer: null,
+    winMessage: null,
   };
 }
 

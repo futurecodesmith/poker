@@ -19,12 +19,16 @@ class Lobby extends Component {
       }));
     }
     socket.onmessage = msg => {
-      // console.log(msg);
-      //let pMsg = JSON.stringify(msg.data);
-      let pMsg = msg.data;
+      let pMsg = JSON.parse(msg.data);
       console.log('Server sends ', pMsg, ' Boolean: ' ,pMsg === "GameReady");
-      if (pMsg === "GameReady") this.props.setSt( { gameReady: true } )
-      else this.props.setSt({ message: pMsg })
+      if (pMsg.action === "GameReady") this.props.setSt( { gameReady: true } );
+      if (pMsg.action === "hand") {
+        this.props.setSt({ 
+          hand: pMsg.hand,
+          amDealer: pMsg.amDealer,
+        }); 
+      };
+      if (pMsg.action === "win") this.props.setSt( { winMessage: pMsg.winMessage } );
     }
     socket.onclose = () => console.log('Socket closed');
     this.props.setSt({ socket: socket });
@@ -38,7 +42,9 @@ class Lobby extends Component {
     if (this.props.state.socket !== 0 && this.props.state.gameReady === true) {
       return (
         //<div>Card Game</div> // this.props.socket
-        <Room message = {this.props.state.message} /> 
+        <div>ROOM
+          <Room winMessage = {this.props.state.winMessage} hand = {this.props.state.hand} amDealer = {this.props.state.amDealer} socket={this.props.state.socket} username = {this.props.state.username} /> 
+        </div>
       )
     } else {
       return (

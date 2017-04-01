@@ -1,22 +1,12 @@
 import React, { Component } from 'react';
-//import Hand from './Hand.jsx';
-//import Table from './Table.jsx';
+import Hand from './Hand.jsx';
+import Table from './Table.jsx';
 
 class Room extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      // dealer: ?,
-      // turn: ?,
-      // round: ?,
-      communityCards: [],
-      potSize: 0,
-      // status: ?,
-      // BalanceP1: ?,
-      // BalanceP2: ?,
-      hand: [],
     };
-  }
+  
 
   // handleFoldButton() => {
     
@@ -37,23 +27,10 @@ class Room extends Component {
   render() {
 
     return (
-      <div>{this.props.message}</div>
-      /*<div className="room">
-        <Table
-          communityCards={this.state.communityCards}
-          potSize={this.state.potSize}
-          status={this.state.status}
-          balanceP2={this.state.balanceP2}
-          balanceP1={this.state.balanceP1}
-          fold={this.handleFoldButton}
-          check={this.handleCheckButton}
-          call={this.handleCallButton}
-          bet={this.handleBetButton}
-        />
-        <Hand
-          hand={this.state.hand}
-        />
-      </div>*/
+      <div>
+        <Table winMessage = {this.props.winMessage} deck={this.props.hand.deck} round={this.props.hand.currentRound} socket ={this.props.socket} username ={this.props.username} />
+        <Hand deck={this.props.hand.deck} amDealer = {this.props.amDealer} />
+      </div>
     );
   }
 
