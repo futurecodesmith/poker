@@ -48,7 +48,7 @@ class Clients {
 //   };
 // }
 
-const hand = {};
+let hand = gameController.createHand(clientArr[0]);
 const clients = new Clients();
 
 const socket = new WebSocket.Server({ port: 8080 });
@@ -60,11 +60,10 @@ socket.on('connection', (client) => {
     if (clientArr.length === 2) {
       // create hand
       console.log(clientArr[0]);
-      hand.deck = gameController.createHand(clientArr[0]);
-      console.log(hand.deck);
+      console.log(hand);
       Object.keys(clients.clientList).forEach((key) => {
         clients.clientList[key].send('GameReady');
-        // clients.clientList[key].send('GameReady');
+        //clients.clientList[key].send(hand);
       });
     }
   });
