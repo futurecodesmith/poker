@@ -13,7 +13,8 @@ app.use(bodyParser.json());
 
 app.get('/', (req, res) => {
   //fs.readFile(path.join(__dirname, '..', 'client/index.html'), (err, data) => {
-    fs.readFile(path.join(__dirname, '..', 'test.html'), (err, data) => {
+    fs.readFile(path.join(__dirname, '..', 'client/index.html'), (err, data) => {
+
     if (err) res.send(err)
     else {
       res.header('content-type', 'text/html');
