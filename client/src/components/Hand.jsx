@@ -2,18 +2,18 @@ import React, { PropTypes } from 'react';
 import Card from './Card.jsx';
 
 const Hand = (props) => {
-  const { p1, p2 } = props;
+  const { cardValue } = props;
 
   return (
     <div className="hand">
-      
+      <Card />
+      <Card />
     </div>
   );
 };
 
 Hand.propTypes = {
-  p1: PropTypes.number.isRequired,
-  p2: PropTypes.number.isRequired,
+  cardValue: PropTypes.number.isRequired,
 };
 
 export default Hand;
