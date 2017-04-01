@@ -1,65 +1,33 @@
-import React, { Component } from 'react';
-import Hand from './Hand.jsx';
-import Interface from './Interface.jsx';
+import React, { PropTypes } from 'react';
+import CommunityCards from './CommunityCards.jsx';
 
-class Table extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      // dealer: ?,
-      // round: ?,
-      // action: ?,
-      player2: [],
-      // p2StackSize: ?,
-      // status: ?,
-      potSize: 0,
-      board: [],
-      // p1StackSize: ?,
-      player1: [],
-    };
-  }
+const Table = (props) => {
+  const { handleFoldButton, handleCheckButton, handleCallButton, handleBetButton } = props;
 
-  // handleFoldButton() => {
-    
-  // }
+  return (
+    <div className="table">
+      
 
-  // handleCheckButton() {
+      {/* Outcome component */}
+      <Outcome status={this.props.status} />
 
-  // }
+      {/* Interface */}
+      <div />
 
-  // handleCallButton() {
+      <button onClick={() => { handleFoldButton(); }} type="button" className="btn-fold">Fold</button>
+      <button onClick={() => { handleCheckButton(); }} type="button" className="btn-check">Check</button>
+      <button onClick={() => { handleCallButton(); }} type="button" className="btn-call">Call</button>
+      <button onClick={() => { handleBetButton(); }} type="button" className="btn-bet">Bet</button>
 
-  // }
+    </div>
+  );
+};
 
-  // handleBetButton() {
-
-  // }
-
-  render() {
-
-    return (
-      <div className="table">
-        <Hand
-          hand={this.state.player2}
-        />
-        <Interface
-          p2Stack={this.state.p2StackSize}
-          status={this.state.status}
-          pot={this.state.potSize}
-          board={this.state.board}
-          p1Stack={this.state.p1StackSize}
-          fold={this.handleFoldButton}
-          check={this.handleCheckButton}
-          call={this.handleCallButton}
-          bet={this.handleBetButton}
-        />
-        <Hand
-          hand={this.state.player1}
-        />
-      </div>
-    );
-  }
-
-}
+Table.propTypes = {
+  handleFoldButton: PropTypes.func,
+  handleCheckButton: PropTypes.func,
+  handleCallButton: PropTypes.func,
+  handleBetButton: PropTypes.func,
+};
 
 export default Table;

@@ -52,7 +52,7 @@
 
 	var _reactDom = __webpack_require__(32);
 
-	var _App = __webpack_require__(178);
+	var _App = __webpack_require__(184);
 
 	var _App2 = _interopRequireDefault(_App);
 
@@ -21501,7 +21501,13 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ },
-/* 178 */
+/* 178 */,
+/* 179 */,
+/* 180 */,
+/* 181 */,
+/* 182 */,
+/* 183 */,
+/* 184 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -21516,9 +21522,13 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Table = __webpack_require__(179);
+	var _Login = __webpack_require__(185);
 
-	var _Table2 = _interopRequireDefault(_Table);
+	var _Login2 = _interopRequireDefault(_Login);
+
+	var _Lobby = __webpack_require__(186);
+
+	var _Lobby2 = _interopRequireDefault(_Lobby);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -21527,6 +21537,14 @@
 	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	function getInitialState() {
+	  return {
+	    view: 'login',
+	    username: '',
+	    socket: 0
+	  };
+	}
 
 	var App = function (_Component) {
 	  _inherits(App, _Component);
@@ -21536,14 +21554,64 @@
 
 	    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
 
-	    _this.state = {};
+	    _this.state = getInitialState();
+	    _this.loginClick = _this.loginClick.bind(_this);
 	    return _this;
 	  }
 
 	  _createClass(App, [{
+	    key: 'loginClick',
+	    value: function loginClick(type) {
+	      var username = document.getElementById('username').value;
+	      var password = document.getElementById('password').value;
+	      var data = JSON.stringify({
+	        username: username,
+	        password: password
+	      });
+	      //console.log('credentials: ', data);
+	      console.log(type);
+	      var xhr = new XMLHttpRequest();
+	      if (type === 'login') xhr.open('POST', '/login');else if (type === 'create') xhr.open('POST', '/user');
+	      xhr.setRequestHeader("Content-type", "application/json");
+	      xhr.send(data);
+
+	      xhr.onreadystatechange = function () {
+	        var DONE = 4; // readyState 4 means the request is done.
+	        var OK = 200; // status 200 is a successful return.
+
+	        if (xhr.readyState === DONE) {
+	          if (xhr.status === OK) {
+	            console.log(username);
+	            this.setState({
+	              view: 'lobby',
+	              username: username
+	            });
+	          }
+	          console.log(xhr.responseText); // 'This is the returned text.'
+	        } else {
+	          console.log('Error: ' + xhr.status); // An error occurred during the request.
+	        }
+	      }.bind(this);
+	    }
+	  }, {
 	    key: 'render',
 	    value: function render() {
-	      return _react2.default.createElement(_Table2.default, null);
+	      var _this2 = this;
+
+	      //console.log('app render ', this.state.username);
+	      var jsx = void 0;
+	      if (this.state.view === 'login') {
+	        jsx = _react2.default.createElement(_Login2.default, { loginClick: this.loginClick.bind(this) });
+	      } else if (this.state.view === 'lobby') {
+	        jsx = _react2.default.createElement(_Lobby2.default, { username: this.state.username, socket: this.state.socket, setSocket: function setSocket(socket) {
+	            _this2.setState({ socket: socket });
+	          } });
+	      }
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        jsx
+	      );
 	    }
 	  }]);
 
@@ -21553,254 +21621,7 @@
 	exports.default = App;
 
 /***/ },
-/* 179 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _Hand = __webpack_require__(180);
-
-	var _Hand2 = _interopRequireDefault(_Hand);
-
-	var _Interface = __webpack_require__(182);
-
-	var _Interface2 = _interopRequireDefault(_Interface);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-	var Table = function (_Component) {
-	  _inherits(Table, _Component);
-
-	  function Table(props) {
-	    _classCallCheck(this, Table);
-
-	    var _this = _possibleConstructorReturn(this, (Table.__proto__ || Object.getPrototypeOf(Table)).call(this, props));
-
-	    _this.state = {
-	      // dealer: ?,
-	      // round: ?,
-	      // action: ?,
-	      player2: [],
-	      // p2StackSize: ?,
-	      // status: ?,
-	      potSize: 0,
-	      board: [],
-	      // p1StackSize: ?,
-	      player1: []
-	    };
-	    return _this;
-	  }
-
-	  // handleFoldButton() => {
-
-	  // }
-
-	  // handleCheckButton() {
-
-	  // }
-
-	  // handleCallButton() {
-
-	  // }
-
-	  // handleBetButton() {
-
-	  // }
-
-	  _createClass(Table, [{
-	    key: 'render',
-	    value: function render() {
-
-	      return _react2.default.createElement(
-	        'div',
-	        { className: 'table' },
-	        _react2.default.createElement(_Hand2.default, {
-	          hand: this.state.player2
-	        }),
-	        _react2.default.createElement(_Interface2.default, {
-	          p2Stack: this.state.p2StackSize,
-	          status: this.state.status,
-	          pot: this.state.potSize,
-	          board: this.state.board,
-	          p1Stack: this.state.p1StackSize,
-	          fold: this.handleFoldButton,
-	          check: this.handleCheckButton,
-	          call: this.handleCallButton,
-	          bet: this.handleBetButton
-	        }),
-	        _react2.default.createElement(_Hand2.default, {
-	          hand: this.state.player1
-	        })
-	      );
-	    }
-	  }]);
-
-	  return Table;
-	}(_react.Component);
-
-	exports.default = Table;
-
-/***/ },
-/* 180 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _Card = __webpack_require__(181);
-
-	var _Card2 = _interopRequireDefault(_Card);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var Hand = function Hand(props) {
-	  var p1 = props.p1,
-	      p2 = props.p2;
-
-
-	  return _react2.default.createElement('div', { className: 'hand' });
-	};
-
-	Hand.propTypes = {
-	  p1: _react.PropTypes.number.isRequired,
-	  p2: _react.PropTypes.number.isRequired
-	};
-
-	exports.default = Hand;
-
-/***/ },
-/* 181 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var Card = function Card(props) {
-	  var hidden = props.hidden,
-	      cardValue = props.cardValue;
-
-
-	  var cardBackgroundUrl = hidden ? 'url(img/hidden.png)' : 'url(img/' + cardValue + '.png)';
-	  var cardStyle = { backgroundImage: cardBackgroundUrl };
-
-	  return _react2.default.createElement('div', { className: 'card', style: cardStyle });
-	};
-
-	Card.propTypes = {
-	  hidden: _react.PropTypes.boolean.isRequired,
-	  cardValue: _react.PropTypes.number.isRequired
-	};
-
-	exports.default = Card;
-
-/***/ },
-/* 182 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-
-	var _react = __webpack_require__(1);
-
-	var _react2 = _interopRequireDefault(_react);
-
-	var _Outcome = __webpack_require__(183);
-
-	var _Outcome2 = _interopRequireDefault(_Outcome);
-
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-	var Interface = function Interface(props) {
-	  var handleFoldButton = props.handleFoldButton,
-	      handleCheckButton = props.handleCheckButton,
-	      handleCallButton = props.handleCallButton,
-	      handleBetButton = props.handleBetButton;
-
-
-	  return _react2.default.createElement(
-	    'div',
-	    { className: 'interface' },
-	    _react2.default.createElement('div', { className: 'p2Stack' }),
-	    _react2.default.createElement(_Outcome2.default, { status: undefined.props.status }),
-	    _react2.default.createElement('div', null),
-	    _react2.default.createElement(
-	      'button',
-	      { onClick: function onClick() {
-	          handleFoldButton();
-	        }, type: 'button', className: 'btn-fold' },
-	      'Fold'
-	    ),
-	    _react2.default.createElement(
-	      'button',
-	      { onClick: function onClick() {
-	          handleCheckButton();
-	        }, type: 'button', className: 'btn-check' },
-	      'Check'
-	    ),
-	    _react2.default.createElement(
-	      'button',
-	      { onClick: function onClick() {
-	          handleCallButton();
-	        }, type: 'button', className: 'btn-call' },
-	      'Call'
-	    ),
-	    _react2.default.createElement(
-	      'button',
-	      { onClick: function onClick() {
-	          handleBetButton();
-	        }, type: 'button', className: 'btn-bet' },
-	      'Bet'
-	    ),
-	    _react2.default.createElement('div', { className: 'p1Stack' })
-	  );
-	};
-
-	Interface.propTypes = {
-	  handleFoldButton: _react.PropTypes.func,
-	  handleCheckButton: _react.PropTypes.func,
-	  handleCallButton: _react.PropTypes.func,
-	  handleBetButton: _react.PropTypes.func
-	};
-
-	exports.default = Interface;
-
-/***/ },
-/* 183 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21815,49 +21636,135 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var Outcome = function Outcome(props) {
-	  var status = props.status,
-	      round = props.round,
-	      potSize = props.potSize;
-
-
+	var Login = function Login(props) {
 	  return _react2.default.createElement(
 	    "div",
-	    { className: "status" },
+	    { id: "login" },
 	    _react2.default.createElement(
-	      "p",
+	      "form",
 	      null,
-	      status
+	      _react2.default.createElement("input", { id: "username", type: "text", placeholder: "Username..." }),
+	      _react2.default.createElement("input", { id: "password", type: "password", placeholder: "Password..." })
 	    ),
 	    _react2.default.createElement(
-	      "p",
-	      null,
-	      round
+	      "button",
+	      { onClick: function onClick() {
+	          return props.loginClick('login');
+	        } },
+	      "Login"
 	    ),
 	    _react2.default.createElement(
-	      "p",
-	      null,
-	      potSize
+	      "button",
+	      { onClick: function onClick() {
+	          return props.loginClick('create');
+	        } },
+	      "Create YoSELF!"
 	    )
-	  )
-
-	  /*<div className='board'>
-	    <Card hidden={true} />
-	    <Card hidden={true} />
-	    <Card hidden={true} />
-	    <Card hidden={true} />
-	    <Card hidden={true} />
-	  </div>*/
-	  ;
+	  );
 	};
 
-	Outcome.propTypes = {
-	  status: _react.PropTypes.string.isRequired,
-	  round: _react.PropTypes.number.isRequired,
-	  potSize: _react.PropTypes.number.isRequired
-	};
+	exports.default = Login;
 
-	exports.default = Outcome;
+/***/ },
+/* 186 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Lobby = function (_Component) {
+	  _inherits(Lobby, _Component);
+
+	  function Lobby() {
+	    _classCallCheck(this, Lobby);
+
+	    var _this = _possibleConstructorReturn(this, (Lobby.__proto__ || Object.getPrototypeOf(Lobby)).call(this));
+
+	    _this.createGame = _this.createGame.bind(_this);
+	    _this.lobbySwitch = _this.lobbySwitch.bind(_this);
+	    return _this;
+	  }
+
+	  _createClass(Lobby, [{
+	    key: 'createGame',
+	    value: function createGame() {
+	      var _this2 = this;
+
+	      var socket = new WebSocket('ws://localhost:8080/');
+	      socket.onopen = function () {
+	        console.log('Socket open');
+	        console.log(_this2.props.username);
+	        socket.send(JSON.stringify({
+	          action: 'createGame',
+	          username: _this2.props.username
+	        }));
+	      };
+	      // socket.onmessage = msg => cb(msg);
+	      socket.onclose = function () {
+	        return console.log('Socket closed');
+	      };
+	      this.props.setSocket(socket);
+	    }
+	  }, {
+	    key: 'lobbySwitch',
+	    value: function lobbySwitch() {
+	      console.log(this.props.socket);
+	      if (this.props.socket !== 0) {
+	        return _react2.default.createElement(
+	          'div',
+	          null,
+	          'Card Game'
+	        ) // this.props.socket
+	        ;
+	      } else {
+	        return _react2.default.createElement(
+	          'div',
+	          { id: 'lobby' },
+	          _react2.default.createElement(
+	            'button',
+	            { onClick: this.createGame },
+	            'Create Game'
+	          ),
+	          _react2.default.createElement(
+	            'button',
+	            { onClick: this.joinGame },
+	            'Join Game'
+	          )
+	        );
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      return _react2.default.createElement(
+	        'div',
+	        null,
+	        this.lobbySwitch()
+	      );
+	    }
+	  }]);
+
+	  return Lobby;
+	}(_react.Component);
+
+	exports.default = Lobby;
 
 /***/ }
 /******/ ]);

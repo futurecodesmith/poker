@@ -12,7 +12,7 @@ const Card = (props) => {
 };
 
 Card.propTypes = {
-  hidden: PropTypes.boolean.isRequired,
+  // hidden: PropTypes.boolean.isRequired,
   cardValue: PropTypes.number.isRequired,
 };
 
