@@ -10,21 +10,22 @@ class Lobby extends Component {
     const socket = new WebSocket('ws://localhost:8080/');
     socket.onopen = () => { 
       console.log('Socket open'); 
-      console.log(this.props.username);
+      console.log(this.props.state.username);
       socket.send(JSON.stringify({
         action: 'createGame',
         username: this.props.username
       }));
     }
-    // socket.onmessage = msg => cb(msg);
+    socket.onmessage = msg => setSt({ message: msg })
     socket.onclose = () => console.log('Socket closed');
-    this.props.setSocket(socket);
+    this.props.setSt({ socket: socket });
   }
   lobbySwitch() {
-    console.log(this.props.socket);
-    if (this.props.socket !== 0) {
+    console.log(this.props.state.socket);
+    if (this.props.state.socket !== 0) {
       return (
         <div>Card Game</div> // this.props.socket
+        // <Room message = {this.props.state.message} /> 
       )
     } else {
       return (

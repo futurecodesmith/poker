@@ -7,6 +7,7 @@ function getInitialState(){
     view: 'login',
     username: '',
     socket: 0,
+    message: null,
   };
 }
 
@@ -57,7 +58,7 @@ class App extends Component {
     if (this.state.view === 'login') {
       jsx = <Login loginClick={this.loginClick.bind(this)} />
     } else if (this.state.view === 'lobby') {
-      jsx = <Lobby username = {this.state.username} socket = {this.state.socket} setSocket = {(socket) => {this.setState({ socket: socket })}} /> 
+      jsx = <Lobby state = {this.state} setSt = {(state) => {this.setState(state)}} /> 
     }
     return (
       <div>

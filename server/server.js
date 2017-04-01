@@ -27,31 +27,30 @@ app.get('/', (req, res) => {
 app.post('/login', userController.validateUser);
 app.post('/user', userController.createUser);
 
-//console.log('username: ', req.body.username, ' pw: ', req.body.password);
-
-
-// app.get('/test.js', (req, res) => {
-//   fs.readFile('test.js', (err, data) => {
-//     if (err) res.send(err);
-//     res.send(data);
-//   });
-// });
-
-// app.get('/webpack-bundle.js', (req, res) => {
-//   fs.readFile(path.join(__dirname, '..', 'build/webpack-bundle.js'), (err, data) => {
-//     if (err) res.send(err);
-//     res.send(data);
-//   });
-// });
-
 class Clients {
   constructor() {
     this.clientList = {};
   }
-  saveClient(uname, client) {
-    this.clientList[uname] = client;
+  saveClient(uname, client, bank) {
+    this.clientList[uname] = {
+      client,
+      bank,
+    };
   }
 }
+
+// class Game {
+//   constructor() {
+//     this.players = [];
+//     //this.hand;
+//   }
+//   addPlayer(uname, hand, bank) {
+//     this.clientList[uname] = {
+//       hand
+//       turn
+//     };
+//   }
+// }
 
 const clients = new Clients();
 
@@ -59,11 +58,9 @@ const socket = new WebSocket.Server({ port: 8080 });
 socket.on('connection', (client) => {
   client.on('message', (msg) => {
     const pMsg = JSON.parse(msg);
-    clients.saveClient(pMsg.username, client);
+    clients.saveClient(pMsg.username, client, 100);
   });
 });
-
-//app.post('/user', userController.createUser);
 
 
 app.listen(3000, () => console.log('Listening on port 3000'));
