@@ -6,10 +6,11 @@ const WebSocket = require('ws');
 const bodyParser = require('body-parser');
 
 const app = express();
+app.use('/static', express.static(path.join(__dirname, '..')));
 //app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// app.use('/static', express.static(path.join(__dirname, '..', 'client')));
+
 
 app.get('/', (req, res) => {
   //fs.readFile(path.join(__dirname, '..', 'client/index.html'), (err, data) => {
@@ -29,19 +30,19 @@ app.post('/user', userController.createUser);
 //console.log('username: ', req.body.username, ' pw: ', req.body.password);
 
 
-app.get('/test.js', (req, res) => {
-  fs.readFile('test.js', (err, data) => {
-    if (err) res.send(err);
-    res.send(data);
-  });
-});
+// app.get('/test.js', (req, res) => {
+//   fs.readFile('test.js', (err, data) => {
+//     if (err) res.send(err);
+//     res.send(data);
+//   });
+// });
 
-app.get('/webpack-bundle.js', (req, res) => {
-  fs.readFile(path.join(__dirname, '..', 'build/webpack-bundle.js'), (err, data) => {
-    if (err) res.send(err);
-    res.send(data);
-  });
-});
+// app.get('/webpack-bundle.js', (req, res) => {
+//   fs.readFile(path.join(__dirname, '..', 'build/webpack-bundle.js'), (err, data) => {
+//     if (err) res.send(err);
+//     res.send(data);
+//   });
+// });
 
 class Clients {
   constructor() {
