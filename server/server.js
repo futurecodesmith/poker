@@ -1,5 +1,5 @@
 const express = require('express');
-//const userController = require('./userController');
+const userController = require('./controllers/UserController');
 const fs = require('fs');
 const path = require('path');
 const WebSocket = require('ws');
@@ -22,10 +22,11 @@ app.get('/', (req, res) => {
   });
 });
 
-app.post('/login', (req, res) => {
-  
-  console.log('username: ', req.body.username, ' pw: ', req.body.password);
-});
+app.post('/login', userController.validateUser);
+app.post('/user', userController.createUser);
+
+//console.log('username: ', req.body.username, ' pw: ', req.body.password);
+
 
 app.get('/test.js', (req, res) => {
   fs.readFile('test.js', (err, data) => {

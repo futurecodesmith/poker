@@ -15,15 +15,17 @@ class App extends Component {
   }
 
   loginClick() {
+    let type = 'login';
     const data = JSON.stringify({
       username: document.getElementById('username').value,
       password: document.getElementById('password').value
     });
 
-    console.log('credentials: ', data);
-
+    //console.log('credentials: ', data);
+    console.log(type);
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', '/login');
+    if (type === 'login') xhr.open('POST', '/login');
+    else if (type === 'create') xhr.open('POST', '/user');
     xhr.setRequestHeader("Content-type", "application/json");
     xhr.send(data);
 
@@ -31,10 +33,11 @@ class App extends Component {
       var DONE = 4; // readyState 4 means the request is done.
       var OK = 200; // status 200 is a successful return.
       if (xhr.readyState === DONE) {
-        if (xhr.status === OK) 
+        if (xhr.status === OK) {
           this.setState({
             view: 'lobby'
-          });
+          })
+        }
           console.log(xhr.responseText); // 'This is the returned text.'
         } else {
           console.log('Error: ' + xhr.status); // An error occurred during the request.
@@ -42,24 +45,10 @@ class App extends Component {
       }
     };
 
-  //   const ajax = $.ajax({
-  //     type: 'POST',
-  //     url: '/login',
-  //     data: data,
-  //     contentType: 'application/json'
-  //   });
-
-  //   ajax.then(() => {
-  //     this.setState({
-  //       view: 'lobby'
-  //     });
-  //   })
-  // }
-
   render() {
     let jsx;
     if (this.state.view === 'login') {
-      jsx = <Login loginClick={this.loginClick} />
+      jsx = <Login loginClick={this.loginClick.bind(this)} />
     } else if (this.state.view === 'lobby') {
       jsx = <p>Placeholder</p>
     }
