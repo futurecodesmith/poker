@@ -55,15 +55,9 @@ const clients = new Clients();
 
 const socket = new WebSocket.Server({ port: 8080 });
 socket.on('connection', (client) => {
-  client.on('message', (message) => {
-    const pMessage = JSON.parse(message);
-    //console.log('clients object', clients.clientList);
-    clients.saveClient(pMessage.username, client);
-    Object.keys(clients.clientList).forEach((key) => { 
-      console.log('username', key);
-      console.log('ready state', clients.clientList[key].readyState);  
-    });
-    console.log('-----------------------------------------------------------');
+  client.on('message', (msg) => {
+    const pMsg = JSON.parse(msg);
+    clients.saveClient(pMsg.username, client);
   });
 });
 
@@ -71,3 +65,13 @@ socket.on('connection', (client) => {
 
 
 app.listen(3000, () => console.log('Listening on port 3000'));
+
+
+
+
+    // Object.keys(clients.clientList).forEach((key) => { 
+    //   console.log('username', key);
+    //   console.log('ready state', clients.clientList[key].readyState);  
+    // });
+
+    // console.log('-----------------------------------------------------------');

@@ -7,7 +7,8 @@ const Login = (props) => {
         <input id="username" type="text" placeholder="Username..." />
         <input id="password" type="password" placeholder="Password..." />
       </form>
-      <button onClick={props.loginClick}>Login</button>
+      <button onClick={() => props.loginClick('login')}>Login</button>
+      <button onClick={() => props.loginClick('create')}>Create YoSELF!</button>
     </div>
   );
 }
