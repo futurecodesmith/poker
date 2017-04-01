@@ -1,15 +1,9 @@
 import React, { PropTypes } from 'react';
 
-const Outcome = (props) => {
+const CommunityCards = (props) => {
   const { status, round, potSize } = props;
 
   return (
-    <div className="status">
-      <p>{status}</p>
-      <p>{round}</p>
-      <p>{potSize}</p>
-    </div>
-
     /*<div className='board'>
       <Card hidden={true} />
       <Card hidden={true} />
@@ -20,10 +14,10 @@ const Outcome = (props) => {
   );
 };
 
-Outcome.propTypes = {
+CommunityCards.propTypes = {
   status: PropTypes.string.isRequired,
   round: PropTypes.number.isRequired,
   potSize: PropTypes.number.isRequired,
 };
 
-export default Outcome;
+export default CommunityCards;
