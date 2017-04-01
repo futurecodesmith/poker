@@ -25,18 +25,222 @@ const GameController = {
     return deck;
   },
 
+  defaultWinner: (deck) => {
+    function straightFlush(cards) {
+      cards.sort((a,b) => a-b);
+      let consecutive = 0;
+      let straightFlush = false;
+      cards.forEach((card, index) => {
+        if (consecutive === 0) consecutive = 1;
+        else if (card === cards[index - 1] + 1 && card % 13 !== 0) consecutive += 1;
+        else consecutive = 1;
+
+        if (consecutive >= 5) {
+          straightFlush = card % 13;
+        }
+      });
+      return straightFlush;
+    }
+
+    function fourOfAKind(cards) {
+      cardValues = cards.map(card => card % 13).sort((a,b) => a-b);
+
+      let consecutive = 0;
+      let four_of_a_kind = false;
+      cardValues.forEach((card, index) => {
+        if (consecutive === 0) consecutive = 1;
+        else if (card === cardValues[index - 1]) consecutive += 1;
+        else consecutive = 1;
+
+        if (consecutive === 4) {
+          four_of_a_kind = card;
+        }
+      });
+
+      return four_of_a_kind;
+    }
+
+    function fullHouse(cards) {
+      cardValues = cards.map(card => card % 13).sort((a,b) => a-b);
+      myHand = cardValues.reduce((acc, card) => {
+        if (acc[card]) acc[card] += 1;
+        else acc[card] = 1;
+        return acc;
+      }, {});
+      let threes = threeOfAKind(cards);
+      let full_house = false;
+      if (threes !== false) {
+        delete myHand[threes];
+        Object.keys(myHand).forEach(cardval => {
+          if (myHand[cardval] >= 2) {
+            full_house = [threes, parseInt(cardval, 10)];
+          }
+        })
+      }
+
+      return full_house;
+    }
+
+    function flush(cards) {
+      let flush = false;
+      const cardValues = cards.map(card => card % 13);
+      const cardSuits = cards.map(card => Math.floor(card / 13));
+      const suitsObj = cardSuits.reduce((acc, suit, index) => {
+        if (acc[suit]) acc[suit].push(cardValues[index]);
+        else acc[suit] = [cardValues[index]];
+        return acc;
+      },{});
+      Object.keys(suitsObj).forEach(suit => {
+        if (suitsObj[suit].length >= 5) {
+          flush = suitsObj[suit].sort((a,b) => a-b).slice(-5);
+        }
+      });
+      return flush;
+    }
+
+    function straight(cards) {
+      let str8 = false;
+      let cardValues = cards.map(card => card % 13).sort((a,b) => a-b);
+      let consecutive = 0;
+      let lastCard;
+      cardValues.forEach((card, index) => {
+        if (consecutive === 0) {
+          consecutive = 1;
+          lastCard = card;
+        }
+        else if (card === lastCard) return;
+        else if (card === lastCard + 1) {
+          consecutive += 1;
+          lastCard = card;
+        } else consecutive = 1;
+
+        if (consecutive >= 5) {
+          str8 = lastCard;
+        }
+      });
+      return str8;
+    }
+
+    function threeOfAKind(cards) {
+      cardValues = cards.map(card => card % 13).sort((a,b) => a-b);
+
+      let consecutive = 0;
+      let three_of_a_kind = false;
+      cardValues.forEach((card, index) => {
+        if (consecutive === 0) consecutive = 1;
+        else if (card === cardValues[index - 1]) consecutive += 1;
+        else consecutive = 1;
+
+        if (consecutive === 3) {
+          three_of_a_kind = card;
+        }
+      });
+
+      return three_of_a_kind;
+    }
+
+    function twoPair(cards) {
+      let two_pair = false;
+      let cardValues = cards.map(card => card % 13).sort((a,b) => a-b);
+
+      let myHand = cardValues.reduce((acc, card) => {
+        if (acc[card]) acc[card] += 1;
+        else acc[card] = 1;
+        return acc;
+      }, {});
+
+      let twos = pair(cards);
+
+      if (twos !== false) {
+        delete myHand[twos];
+        Object.keys(myHand).forEach(cardval => {
+          if (myHand[cardval] >= 2) {
+            two_pair = [twos, parseInt(cardval,10)];
+          }
+        })
+      }
+      return two_pair;
+    }
+
+    function pair(cards) {
+      cardValues = cards.map(card => card % 13).sort((a,b) => a-b);
+
+      let consecutive = 0;
+      let pair = false;
+      cardValues.forEach((card, index) => {
+        if (consecutive === 0) consecutive = 1;
+        else if (card === cardValues[index - 1]) consecutive += 1;
+        else consecutive = 1;
+
+        if (consecutive === 2) {
+          pair = card;
+        }
+      });
+      return pair;
+    }
+
+    function highCard(cards) {
+      let cardValues = cards.map(card => card % 13).sort((a,b) => a-b);
+      return cardValues[cardValues.length - 1];
+    }
+
+    const handTypes = [straightFlush, fourOfAKind, fullHouse, flush, straight,
+      threeOfAKind, twoPair, pair, highCard];
+
+    const dealerCards = deck.slice(0,2).concat(deck.slice(4));
+    const opponentCards = deck.slice(2);
+
+    let dealerHand = [];
+    let opponentHand = [];
+    handTypes.forEach((valuation, index) => {
+      if (!dealerHand.length && valuation(dealerCards) !== false) dealerHand.push(index, valuation(dealerCards));
+      if (!opponentHand.length && valuation(dealerCards) !== false) opponentHand.push(index, valuation(opponentCards));
+    })
+
+    if (dealerHand[0] < opponentHand[0]) return 'dealer';
+    if (dealerHand[0] > opponentHand[0]) return 'opponent';
+
+    //tied with fullhouse or twoPair
+    if (dealerHand[0] === 2 || dealerHand[0] === 6) {
+      if (dealerHand[1][0] > opponentHand[1][0]) return 'dealer';
+      if (opponentHand[1][0] > dealerHand[1][0]) return 'opponent';
+      if (dealerHand[1][1] > opponentHand[1][1]) return 'dealer';
+      if (opponentHand[1][1] > dealerHand[1][1]) return 'opponent';
+      return 'tie';
+    }
+    //tied with flush
+    if (dealerHand[0] === 3) {
+      while (dealerHand[1].length) {
+        let dealerCard = dealerHand[1].pop();
+        let opponentCard = opponentHand.pop();
+        if (dealerCard > opponentCard) return 'dealer';
+        if (opponentCard > dealerCard) return 'opponent';
+      }
+      return 'tie';
+    }
+    //tied with anything else
+    if (dealerHand[1] > opponentHand[1]) return 'dealer';
+    if (opponentHand[1] > dealerHand[1]) return 'opponent';
+    return 'tie';
+  },
+
   createHand: (message) => {
     const hand = {
       deck: GameController.createDeck(),
       dealer: message.sender,
+      defaultWinner: GameController.defaultWinner(this.deck),
       round1: [],
       round2: [],
       round3: [],
       round4: []
     }
+  },
+
+  updateHand: (message, hand) => {
+    if (message.action === 'bet') {
+      hand[message.round].push(message.wager);
+    } else if (message.action === 'fold')
   }
-
-
 
 }
 
