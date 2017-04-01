@@ -18,7 +18,7 @@ const GameController = {
       59,50,51];
     const deck = [];
 
-    for (let i = 52; i > 40; i -= 1) {
+    for (let i = 52; i > 43; i -= 1) {
       let cardIndex = Math.floor(Math.random()*i);
       deck.push(cards.splice(cardIndex, 1)[0]);
     }
@@ -36,7 +36,7 @@ const GameController = {
     }
   }
 
-  
+
 
 }
 
