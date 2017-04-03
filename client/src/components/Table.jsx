@@ -10,7 +10,6 @@ const Table = (props) => {
     } else {
       return (
       <div className="table">
-        ROUND: {props.round} <br />
         <CommunityCards deck = {props.deck} round = {props.round} />
         <button onClick = {() => props.socket.send(JSON.stringify({action: 'ready', username: props.username }))}>Ready!!!</button>
       </div> 

@@ -42,8 +42,9 @@ class Lobby extends Component {
     if (this.props.state.socket !== 0 && this.props.state.gameReady === true) {
       return (
         //<div>Card Game</div> // this.props.socket
-        <div>ROOM
+        <div>
           <Room winMessage = {this.props.state.winMessage} hand = {this.props.state.hand} amDealer = {this.props.state.amDealer} socket={this.props.state.socket} username = {this.props.state.username} /> 
+          <p id = 'title'> Poker by Ryan, Will, and Matt</p>
         </div>
       )
     } else {
